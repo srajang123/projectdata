@@ -1,0 +1,23 @@
+table.profile_per{
+    border-style: none;
+    border-width: 0.2vw;
+    border-color:#111;
+    border-collapse:collapse;
+}
+tr.profile_row:nth-child(odd)
+{
+    background-color:rgba(0,0,200,0.5);
+}
+th.profile_head{
+    font-size:1.5vw;
+    border-bottom-style:solid;
+    border-bottom-width: 0.2vw;
+    border-color:#111;
+}
+td.profile_data{
+    font-size:1.5vw;
+    border-bottom-style:solid;
+    border-bottom-width: 0.2vw;
+    border-color:#111;
+    margin:0;
+}

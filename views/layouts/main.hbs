@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style1.css">
+    <link rel="stylesheet" href="/css/style2.css">
+    {{#if profile}}
+        <link rel="stylesheet" href="/css/profile.css">
+    {{/if}}
+    {{#if form}}
+        <link rel="stylesheet" href="/css/forms.css">
+    {{/if}}
+    {{#if dashboard}}
+        <link rel="stylesheet" href="/css/dashboard.css">
+    {{/if}}
+</head>
+<body>
+    <div id="header" class="header">
+        <h1 class="header">PROJECT</h1>
+        <div id="nav" class="nav">
+            <ul id="navi" class="nav">
+                <div id="hid_nav" class="hid_nav">&#9776;</div>
+                <li id="navsel" class="navsel"><a href="/home" id="navlink" class="{{#if homePage}}current{{/if}}">Home</a></li>
+                <!--<li id="navsel" class="navsel"><a href="/consumer" id="navlink" class="{{#if studentPage}}current{{/if}}">Student</a></li>
+                <li id="navsel" class="navsel"><a href="/developer" id="navlink" class="{{#if teacherPage}}current{{/if}}">Teacher</a></li>-->
+                {{#if loggedIn}}
+                    <li id="navsel" class="navsel"><a href="/dashboard" id="navlink" class="{{#if dashboard}}current{{/if}}">Dashboard</a></li>
+                    <!--<li id="navsel" class="navsel"><a href="/logout" id="navlink" class="{{#if loginPage}}current{{/if}}">Logout</a></li>-->
+                {{else}}
+                    <li id="navsel" class="navsel"><a href="/login" id="navlink" class="{{#if loginPage}}current{{/if}}">LogIn</a></li>
+                    <li id="navsel" class="navsel"><a href="/signup" id="navlink" class="{{#if signupPage}}current{{/if}}">SignUp</a></li>
+                {{/if}}
+                <li id="navsel" class="navsel"><a href="/about" id="navlink" class="{{#if aboutPage}}current{{/if}}">About Us</a></li>
+                <li id="navsel" class="navsel"><a href="/contact" id="navlink" class="{{#if contactPage}}current{{/if}}">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="body" class="body">
+        <br/>
+        <br/>
+        {{{body}}}
+    </div>
+    <div id="footer" class="footer">
+
+    </div>
+    
+</body>
+    <script src="/js/const.js"></script>
+    {{#if homePage}}<script src="/js/main.js"></script>{{/if}}
+    {{#if signUpPage}}<script src="/js/signup.js"></script>{{/if}}
+</html>

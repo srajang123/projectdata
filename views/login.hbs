@@ -1,0 +1,22 @@
+<form name="loginForm" action="/login" method="post" >
+    <table id="signup" class="form">
+        <tr>
+            <td>
+                <select name="Login" id="type" class="text">
+                <option value="-1">--Select Profile--</option> 
+                <option value="0">Student</option> 
+                <option value="1">Teacher</option>  
+                </select>
+            </td>
+        </tr> 
+        <tr>
+            <td><input type="email" name="email"  id="email" class="text" placeholder="E-mail" required><br><br></td>
+        </tr>
+        <tr>
+            <td><input type="password" name="password" required id="password" class="text" placeholder="Password"><br><br></td>
+        </tr>
+        <tr>
+            <td><input type="submit" id="submit" class="button" placeholder="Submit"></td>
+        </tr>
+    </table>
+</form>

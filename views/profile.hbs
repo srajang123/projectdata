@@ -1,0 +1,35 @@
+<div class="nav-ver-dash" id="nav-ver">
+    <ul class="nav-ver">
+            <a id="navlink" href="/dashboard"><li class="navilink" id="nav-ver">Activity</li></a>
+            <a id="navlink" href="/myquestions"><li class="navilink" id="nav-ver">Your Questions</li></a>
+            <a id="navlink" href="/newquestion"><li class="navilink" id="nav-ver">New Question</li></a>
+            <a id="navlink" href="/profile"><li class="navilink" id="nav-ver">Profile</li></a>
+            <a id="navlink" href="/logout"><li class="navilink" id="nav-ver">Logout</li></a>
+    </ul>
+</div>
+<div class="right">
+    <div class="profile" id="profile">
+        <table class="profile_per">
+            <tr class="profile_row">
+                <th class="profile_head">Name:</th>
+                <td class="profile_data">{{{data.fname}}} {{{data.lname}}}</td>
+            </tr>
+            <tr class="profile_row">
+                <th class="profile_head">Gender:</th>
+                <td class="profile_data">{{{data.gender}}}</td>
+            </tr>
+            <tr class="profile_row">
+                <th class="profile_head">E-mail:</th>
+                <td class="profile_data">{{{data.email}}}</td>
+            </tr>
+            <tr class="profile_row">
+                <th class="profile_head">Contact:</th>
+                <td class="profile_data">{{{data.contact}}}</td>
+            </tr>
+            <tr class="profile_row">
+                <th class="profile_head">Account Type:</th>
+                <td class="profile_data">{{#if data.type}}Teacher{{else}}Student{{/if}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

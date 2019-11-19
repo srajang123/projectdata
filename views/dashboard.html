@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dashboard</title>
+
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+        }
+        ul.nav-ver{
+            list-style-type: none;
+            margin:0;
+            padding:0;
+            width:20%;
+            background-color: #00a;
+            height:100%;
+            position: fixed;
+            overflow: none;
+        }
+        li.navilink{
+            color: #eee;
+            font-size: 1.5vw;
+            height: 2.5vw;
+            padding:1vw;
+        }
+        li.navilink:hover{
+            background-color: #00f;
+            cursor:pointer;
+        }
+        a#navlink{
+            text-decoration-line: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-ver-dash" id="nav-ver">
+        <ul class="nav-ver">
+                <li class="navilink" id="nav-ver">Activity</li>
+                <a id="navlink" href="/myquestions"><li class="navilink" id="nav-ver">Your Questions</li></a>
+                <a id="navlink" href="/newquestion"><li class="navilink" id="nav-ver">New Question</li></a>
+                <a id="navlink" href="/profile"><li class="navilink" id="nav-ver">Profile</li></a>
+                <a id="navlink" href="/logout"><li class="navilink" id="nav-ver">Logout</li></a>
+        </ul>
+    </div>
+</body>
+</html>

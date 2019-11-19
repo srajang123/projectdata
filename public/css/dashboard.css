@@ -1,0 +1,30 @@
+*{
+    padding: 0;
+    margin:0;
+}
+ul.nav-ver{
+    list-style-type: none;
+    margin:0;
+    padding:0;
+    width:20%;
+    background-color: #00a;
+    height:100%;
+    position: fixed;
+    overflow: none;
+}
+li.navilink{
+    color: #eee;
+    font-size: 1.5vw;
+    height: 2.5vw;
+    padding:1vw;
+}
+li.navilink:hover{
+    background-color: #00f;
+    cursor:pointer;
+}
+a#navlink{
+    text-decoration-line: none;
+}
+.right{
+    margin-left: 25%;
+}
