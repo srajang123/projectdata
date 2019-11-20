@@ -104,7 +104,16 @@ app.get('/dashboard',(req,res,next)=>{
         res.render('dashboard',{title:'Dashboard',dashboard:true});
     }
 });
-app.get('/profile',(req,res,next)=>{
+app.get('/profile/:uname',(req,res,next)=>{
+    console.log(req.params.uname);
+    let user=req.params.uname;
+    db.execute('select * from record where email=?',[user])
+    .then(rows=>{
+        res.render('profile',{data:rows[0][0],dashboard:true,profile:true});
+    })
+    .catch(err=>{console.log(err)})
+})
+app.get('/myprofile',(req,res,next)=>{
     if(!req.session.isLoggedIn)
         res.redirect('/login');
     else
@@ -117,7 +126,19 @@ app.get('/profile',(req,res,next)=>{
         .catch(err=>{console.log(err);});
     }
 });
-
+app.get('/myquestions',(req,res,next)=>{
+    if(!req.session.isLoggedIn)
+        res.redirect('/login');
+    else
+    {
+        let user=req.session.user;
+        db.execute('select * from record r, questions q where r.email=? and r.email=q.askedby order by num',[user])
+        .then(rows=>{
+            res.render('questions',{dashboard:true,data:rows[0],size:rows[0].length>0,questions:true});
+        })
+        .catch(err=>{console.log(err)})
+    }
+})
 app.use((req,res,next)=>{
     res.status(404).render('404',{title:'Page Not Found'});
 });

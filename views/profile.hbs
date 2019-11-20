@@ -9,27 +9,32 @@
 </div>
 <div class="right">
     <div class="profile" id="profile">
-        <table class="profile_per">
-            <tr class="profile_row">
-                <th class="profile_head">Name:</th>
-                <td class="profile_data">{{{data.fname}}} {{{data.lname}}}</td>
-            </tr>
-            <tr class="profile_row">
-                <th class="profile_head">Gender:</th>
-                <td class="profile_data">{{{data.gender}}}</td>
-            </tr>
-            <tr class="profile_row">
-                <th class="profile_head">E-mail:</th>
-                <td class="profile_data">{{{data.email}}}</td>
-            </tr>
-            <tr class="profile_row">
-                <th class="profile_head">Contact:</th>
-                <td class="profile_data">{{{data.contact}}}</td>
-            </tr>
-            <tr class="profile_row">
-                <th class="profile_head">Account Type:</th>
-                <td class="profile_data">{{#if data.type}}Teacher{{else}}Student{{/if}}</td>
-            </tr>
-        </table>
+        {{#if data}}
+            <table class="profile_per">
+                <tr class="profile_row">
+                    <th class="profile_head">Name:</th>
+                    <td class="profile_data">{{{data.fname}}} {{{data.lname}}}</td>
+                </tr>
+                <tr class="profile_row">
+                    <th class="profile_head">Gender:</th>
+                    <td class="profile_data">{{{data.gender}}}</td>
+                </tr>
+                <tr class="profile_row">
+                    <th class="profile_head">E-mail:</th>
+                    <td class="profile_data">{{{data.email}}}</td>
+                </tr>
+                <tr class="profile_row">
+                    <th class="profile_head">Contact:</th>
+                    <td class="profile_data">{{{data.contact}}}</td>
+                </tr>
+                <tr class="profile_row">
+                    <th class="profile_head">Account Type:</th>
+                    <td class="profile_data">{{#if data.type}}Teacher{{else}}Student{{/if}}</td>
+                </tr>
+            </table>
+        {{else}}
+            <h1 class="nofound" id-"noUser">User {{{uame}}} cannot be found</h1>
+            <h2 class="nofound" id="redirect">Please check the username provided</h2>
+        {{/if}}
     </div>
 </div>
