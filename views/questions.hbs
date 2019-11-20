@@ -1,0 +1,36 @@
+<div class="nav-ver-dash" id="nav-ver">
+    <ul class="nav-ver">
+            <a id="navlink" href="/dashboard"><li class="navilink" id="nav-ver">Activity</li></a>
+            <a id="navlink" href="/myquestions"><li class="navilink" id="nav-ver">Your Questions</li></a>
+            <a id="navlink" href="/newquestion"><li class="navilink" id="nav-ver">New Question</li></a>
+            <a id="navlink" href="/myprofile"><li class="navilink" id="nav-ver">Profile</li></a>
+            <a id="navlink" href="/logout"><li class="navilink" id="nav-ver">Logout</li></a>
+    </ul>
+</div>
+<div class="right">
+    {{#if size}}
+    <table class="quest" id="quest">
+        <tr>
+            <th>S.No</th>
+            <th>Question</th>
+            <th>Description</th>
+            <th>Subject</th>
+            <th>Answer</th>
+            <th>Answered By</th>
+        </tr>
+        {{#each data}}
+        <tr>
+            <td>{{{this.num}}}</td>
+            <td>{{{this.question}}}</td>
+            <td>{{{this.description}}}</td>
+            <td>{{{this.subject}}}</td>
+            <td>{{{this.answer}}}</td>
+            <td><a href="/profile/{{{this.ansby}}}">View Profile</a></td>
+        </tr>
+        {{/each}}
+    </table>
+    {{else}}
+        <h2>You have not asked any question yet</h2>
+        <h3><a href="/newquestion">Click here to ask a question</a></h3>
+    {{/if}}
+</div>
