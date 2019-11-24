@@ -1,23 +1,27 @@
-table.profile_per{
+table.profile_per {
     border-style: none;
     border-width: 0.2vw;
-    border-color:#111;
-    border-collapse:collapse;
+    border-color: #111;
+    border-collapse: collapse;
+    margin-left: 12vw;
+    margin-top: 4vw;
 }
-tr.profile_row:nth-child(odd)
-{
-    background-color:rgba(0,0,200,0.5);
+
+tr.profile_row:nth-child(odd) {
+    background-color: rgba(0, 0, 200, 0.5);
 }
-th.profile_head{
-    font-size:1.5vw;
-    border-bottom-style:solid;
+
+th.profile_head {
+    font-size: 1.5vw;
+    border-bottom-style: solid;
     border-bottom-width: 0.2vw;
-    border-color:#111;
+    border-color: #111;
 }
-td.profile_data{
-    font-size:1.5vw;
-    border-bottom-style:solid;
+
+td.profile_data {
+    font-size: 1.5vw;
+    border-bottom-style: solid;
     border-bottom-width: 0.2vw;
-    border-color:#111;
-    margin:0;
+    border-color: #111;
+    margin: 0;
 }
