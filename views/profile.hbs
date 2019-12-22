@@ -8,6 +8,8 @@
     </ul>
 </div>
 <div class="right">
+    <h2 class="profile-name">{{{data.fname}}} {{{data.lname}}}</h2>
+    <h3 class="profile-type">{{#if data.type}}Teacher{{else}}Student{{/if}}</h3>
     <div class="profile" id="profile">
         {{#if data}}
             <table class="profile_per">
