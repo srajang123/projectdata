@@ -96,11 +96,23 @@ app.get('/dashboard', (req, res, next) => {
     }
 });
 app.get('/profile/:uname', (req, res, next) => {
-    console.log(req.params.uname);
     let user = req.params.uname;
     db.execute('select * from record where email=?', [user])
         .then(rows => {
-            res.render('profile', { data: rows[0][0], dashboard: true, profile: true });
+            let tques = 0,
+                tans = 0;
+            db.execute('select count(*) as total from questions where askedby=?', [user])
+                .then(rowa => {
+                    rowa = rowa[0][0];
+                    tques = rowa.total;
+                    db.execute('select count(*) as tot from questions where askedby=? and ansby is not NULL', [user])
+                        .then(rowb => {
+                            tans = rowb[0][0].tot;
+                            res.render('profile', { dashboard: true, data: rows[0][0], profile: true, total: tques, totalans: tans, totalunans: (tques - tans) });
+                        })
+                        .catch(err => { console.log(err) });
+                })
+                .catch(err => { console.log(err) });
         })
         .catch(err => { console.log(err) })
 })
@@ -111,7 +123,20 @@ app.get('/myprofile', (req, res, next) => {
         let user = req.session.user;
         db.execute('select * from record where email=?', [user])
             .then(rows => {
-                res.render('profile', { dashboard: true, data: rows[0][0], profile: true });
+                let tques = 0,
+                    tans = 0;
+                db.execute('select count(*) as total from questions where askedby=?', [user])
+                    .then(rowa => {
+                        rowa = rowa[0][0];
+                        tques = rowa.total;
+                        db.execute('select count(*) as tot from questions where askedby=? and ansby is not NULL', [user])
+                            .then(rowb => {
+                                tans = rowb[0][0].tot;
+                                res.render('profile', { dashboard: true, data: rows[0][0], profile: true, total: tques, totalans: tans, totalunans: (tques - tans) });
+                            })
+                            .catch(err => { console.log(err) });
+                    })
+                    .catch(err => { console.log(err) });
             })
             .catch(err => { console.log(err); });
     }

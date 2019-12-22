@@ -16,11 +16,14 @@
     {{#if dashboard}}
         <link rel="stylesheet" href="/css/dashboard.css">
     {{/if}}
+    {{#if questions}}
+        <link rel="stylesheet" href="/css/questions.css">
+    {{/if}}
 </head>
 <body>
     <div id="header" class="header">
-        <h1 class="header">Answer Home</h1>
-        <div id="nav" class="nav">
+        <h1 class="header noselect">Answer Home</h1>
+        <div id="nav" class="nav noselect">
             <ul id="navi" class="nav">
                 <div id="hid_nav" class="hid_nav">&#9776;</div>
                 <li id="navsel" class="navsel"><a href="/home" id="navlink" class="{{#if homePage}}current{{/if}}">Home</a></li>

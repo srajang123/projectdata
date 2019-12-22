@@ -33,14 +33,3 @@ a#navlink {
 .right {
     margin-left: 25%;
 }
-
-.profile-name {
-    color: #00f;
-    font-size: 3vw;
-    text-transform: uppercase;
-}
-
-.profile-type {
-    color: #f52;
-    font-size: 2vw;
-}

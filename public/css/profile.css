@@ -1,27 +1,89 @@
+.profile-name {
+    color: #00f;
+    font-size: 3vw;
+    text-transform: uppercase;
+}
+
+.profile-type {
+    color: #f52;
+    font-size: 2vw;
+}
+
 table.profile_per {
     border-style: none;
     border-width: 0.2vw;
     border-color: #111;
     border-collapse: collapse;
-    margin-left: 12vw;
-    margin-top: 4vw;
-}
-
-tr.profile_row:nth-child(odd) {
-    background-color: rgba(0, 0, 200, 0.5);
+    margin-top: 1vw;
 }
 
 th.profile_head {
-    font-size: 1.5vw;
-    border-bottom-style: solid;
-    border-bottom-width: 0.2vw;
-    border-color: #111;
+    font-size: 2vw;
+    text-align: left;
 }
 
 td.profile_data {
-    font-size: 1.5vw;
-    border-bottom-style: solid;
-    border-bottom-width: 0.2vw;
-    border-color: #111;
+    font-size: 2vw;
+    color: #005;
+    font-weight: 500;
     margin: 0;
+}
+
+img.profile-pic {
+    height: 18vw;
+    width: 15vw;
+    border-radius: 2px;
+    box-shadow: 0 0 4px 2px;
+}
+
+td.profile-right {
+    width: 25%;
+}
+
+td.profile-left {
+    vertical-align: top;
+}
+
+.stats {
+    display: flex;
+}
+
+.block {
+    flex: auto;
+    width: 20%;
+    max-width: 20%;
+    background-color: #efefef;
+    text-align: center;
+    margin-right: 2vw;
+    margin-top: 2vw;
+    border-radius: 5px;
+}
+
+.block:hover {
+    background-color: #cfcfcf;
+    cursor: default;
+    box-shadow: 0 0 4px 2px #cfcfcf;
+}
+
+.block>h2 {
+    font-size: 1.7vw;
+    color: #000022;
+    padding-top: 1vw;
+}
+
+.block>h3 {
+    padding-top: 1.5vw;
+    padding-bottom: 1.5vw;
+    font-size: 2vw;
+    color: #0000aa;
+}
+
+@media only screen and (max-width:800px) {
+    .block {
+        width: 100%;
+        max-width: 100%
+    }
+    .block>h2 {
+        font-size: 3vw;
+    }
 }
