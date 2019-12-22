@@ -1,0 +1,10 @@
+table.quest {
+    border-style: solid;
+    border-width: 2px;
+}
+
+table.quest th {
+    font-size: 2vw;
+    border-style: solid;
+    border-width: 2px;
+}
