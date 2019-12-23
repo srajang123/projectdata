@@ -20,11 +20,11 @@
         </tr>
         {{#each data}}
         <tr>
-            <td>{{{this.num}}}</td>
-            <td>{{{this.question}}}</td>
-            <td>{{{this.description}}}</td>
+            <td class="sno">{{{this.num}}}</td>
+            <td class="ques">{{{this.question}}}</td>
+            <td class="desc">{{{this.description}}}</td>
             <td>{{{this.subject}}}</td>
-            <td>{{{this.answer}}}</td>
+            <td class="ans">{{{this.answer}}}</td>
             <td><a href="/profile/{{{this.ansby}}}">View Profile</a></td>
         </tr>
         {{/each}}
