@@ -42,8 +42,29 @@
         </div>
     </div>
     <div id="body" class="body">
-        <br/>
-        <br/>
+        {{#if dashboard}}
+            {{#if student}}
+                <div class="nav-ver-dash" id="nav-ver">
+                    <ul class="nav-ver">
+                        <a id="navlink" href="/dashboard"><li class="navilink" id="nav-ver">Activity</li></a>
+                        <a id="navlink" href="/myquestions"><li class="navilink" id="nav-ver">Your Questions</li></a>
+                        <a id="navlink" href="/newquestion"><li class="navilink" id="nav-ver">New Question</li></a>
+                        <a id="navlink" href="/myprofile"><li class="navilink" id="nav-ver">Profile</li></a>
+                        <a id="navlink" href="/logout"><li class="navilink" id="nav-ver">Logout</li></a>
+                    </ul>
+                </div>
+            {{else}}
+                <div class="nav-ver-dash" id="nav-ver">
+                    <ul class="nav-ver">
+                        <a id="navlink" href="/dashboard"><li class="navilink" id="nav-ver">Activity</li></a>
+                        <a id="navlink" href="/myanswers"><li class="navilink" id="nav-ver">Your Answers</li></a>
+                        <a id="navlink" href="/questions"><li class="navilink" id="nav-ver">Questions</li></a>
+                        <a id="navlink" href="/myprofile"><li class="navilink" id="nav-ver">Profile</li></a>
+                        <a id="navlink" href="/logout"><li class="navilink" id="nav-ver">Logout</li></a>
+                    </ul>
+                </div>
+            {{/if}}
+        {{/if}}
         {{{body}}}
     </div>
     <div id="footer" class="footer">
@@ -54,4 +75,5 @@
     <script src="/js/const.js"></script>
     {{#if homePage}}<script src="/js/main.js"></script>{{/if}}
     {{#if signUpPage}}<script src="/js/signup.js"></script>{{/if}}
+    {{#if form}}<script src="/js/validate.js"></script>{{/if}}
 </html>

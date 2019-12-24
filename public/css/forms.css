@@ -1,56 +1,84 @@
-body{
+body {
     background-color: #135;
 }
-h2#title{
-    color:#def;
+
+h2#title {
+    color: #def;
     font-size: 3vw;
     text-transform: uppercase;
     text-align: center;
     cursor: default;
     user-select: none;
+    margin-top: 1%;
 }
-table.form{
+
+table.form {
     position: relative;
-    top:2vw;
-    margin-left:32vw;
+    top: 1.5vw;
+    margin-left: 32vw;
 }
-.text{
-    background-color:#fff;
+
+.text {
+    background-color: #fff;
     border-style: solid;
     border-width: 0.1vw;
-    border-color:#00f;
+    border-color: #00f;
     font-size: 1.1vw;
     margin-bottom: 0.2vw;
     outline: none;
 }
-.text:focus{
+
+.text:focus {
     border-width: 0.15vw;
     border-radius: 0.35vw;
 }
-input.text{
+
+input.text {
     height: 2vw;
-    width:35vw;
+    width: 35vw;
     padding-left: 0.5vw;
 }
-textarea.text{
+
+textarea.text {
     padding: 0.5vw;
     width: 34.5vw;
-    resize:none;
+    resize: none;
 }
-input.button{
+
+input.button {
     font-size: 1vw;
-    color:#00f;
+    color: #00f;
     background-color: #fff;
-    border-width:0.01vw;
+    border-width: 0.01vw;
     border-color: #00f;
     height: 2vw;
-    width:5vw;
-    margin-left:6vw;
-    margin-right:5vw;
-    outline:none;
+    width: 5vw;
+    margin-left: 6vw;
+    margin-right: 5vw;
+    outline: none;
 }
-input.button:hover{
+
+input.button:hover {
     background-color: #00f;
-    color:#fff;
+    color: #fff;
     font-weight: 700;
+}
+
+.error {
+    display: block;
+    height: 4vh;
+    width: 32vw;
+    max-width: 35vw;
+    background-color: #f25555;
+    border-style: solid;
+    border-width: 0.2vw;
+    border-color: #f21111;
+    border-radius: 4px;
+    margin: auto;
+    padding: 0.78% 2% 0.5% 1%;
+    color: #500;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 0.5%;
+    visibility: hidden;
 }
