@@ -170,6 +170,69 @@ app.get('/myanswers', (req, res, next) => {
             .catch(err => { console.log(err) })
     }
 })
+app.get('/admin', (req, res, next) => {
+    if (req.session.admin && req.session.isLoggedIn) {
+        res.render('profile');
+    } else
+        res.redirect('/admin-login');
+});
+app.get('/admin-login', (req, res, next) => {
+    res.render('admin-login', { title: 'Admin Login', loginPage: true, form: true });
+})
+app.post('/admin-login', (req, res, next) => {
+    db.execute('select * from admin where uname=?', [req.body.email])
+        .then(rows => {
+            rows = rows[0][0];
+            if (rows) {
+                encrypt.compare(req.body.password, rows.password)
+                    .then(ans => {
+                        if (ans) {
+                            req.session.admin = true;
+                            req.session.isLoggedIn = true;
+                            req.session.user = req.body.email;
+                            req.session.save(err => {
+                                if (err) {
+                                    console.log('Error saving ' + err)
+                                } else
+                                    res.redirect('/admin');
+                            })
+                        } else {
+                            console.log('Password not match');
+                            res.redirect('/admin-login');
+                        }
+                    })
+                    .catch(err => console.log(err));
+            } else {
+                console.log('Record not found');
+                res.redirect('/admin-login');
+            }
+        })
+        .catch(err => console.log(err));
+});
+app.get('/admin-signup', (req, res, next) => {
+    res.render('admin-signup', { title: 'Admin SignUp', signupPage: true, form: true });
+})
+app.post('/admin-signup', (req, res, next) => {
+    db.execute('select * from admin')
+        .then(rows => {
+            rows = rows[0][0];
+            if (!rows) {
+                encrypt.hash(req.body.password, 12)
+                    .then(pass => {
+                        db.execute('insert into admin values(?,?,?,?,?,?)', [req.body.fname, req.body.lname, req.body.gender, req.body.contact, req.body.email, pass])
+                            .then(rows => {
+                                res.redirect('/admin');
+                            })
+                            .catch(err => { console.log(err) });
+                    })
+                    .catch(err => { console.log(err) });
+            } else {
+                console.log('Record already exists');
+                res.redirect('/admin-login');
+            }
+        })
+        .catch(err => { console.log(err) });
+});
 app.use((req, res, next) => {
     res.status(404).render('404', { title: 'Page Not Found' });
 });
