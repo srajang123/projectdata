@@ -1,10 +1,11 @@
 <h2 id="title" class="title">Sign&nbsp;Up</h2>
     <div id="sign up" class="signup">
-        <form action="/signup" method="post">
+        <div class="error"></div>
+        <form name="signupForm" action="/signup" method="post">
             <table id="signup" class="form" > 
                 <tr>
                     <td>
-                        <select name="Login" id="type" class="text">
+                        <select name="type" id="type" class="text">
                         <option value="-1">--Select Profile--</option> 
                         <option value="0">Student</option> 
                         <option value="1">Teacher</option>  
@@ -12,10 +13,10 @@
                     </td>
                 </tr> 
                 <tr>
-                    <td><input type="text" name="fname" placeholder="First Name" required id="fname" class="text"></td>
+                    <td><input type="text" name="fname" placeholder="First Name"   id="fname" class="text"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="lname" placeholder="Last Name" required id="lname" class="text">
+                    <td><input type="text" name="lname" placeholder="Last Name"   id="lname" class="text">
                 </td>
                 </tr>
                 <tr>
@@ -32,7 +33,7 @@
                     <td><input type="text" name="contact" placeholder="Contact" id="contact" class="text"></td>
                 </tr>
                 <tr>
-                    <td><input type="email" name="email" placeholder="E-mail" required id="email" class="text"></td>
+                    <td><input type="text" name="email" placeholder="E-mail"   id="email" class="text"></td>
                 </tr>
                 <tr>
                     <td><input type="password" name="password" id="password" placeholder ="Password"   class="text"></td>

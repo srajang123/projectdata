@@ -23,7 +23,6 @@ app.use((req, res, next) => {
     next();
 });
 app.get('/', (req, res, next) => {
-    console.log('HI:=>' + req.session.isLoggedIn);
     res.render('home', { title: 'HOME', homePage: true });
 });
 app.get('/home', (req, res, next) => {
@@ -35,6 +34,9 @@ app.get('/contact', (req, res, next) => {
 app.get('/signup', (req, res, next) => {
     res.status(200).render('signup', { title: 'Sign Up', signupPage: true, form: true });
 });
+app.get('/about', (req, res, next) => {
+    res.status(200).render('aboutus', { title: 'About Us', aboutPage: true });
+})
 app.post('/signup', (req, res, next) => {
     db.execute('select * from record where email=?', [req.body.email])
         .then((rows) => {
@@ -42,7 +44,7 @@ app.post('/signup', (req, res, next) => {
                 let pass = req.body.password;
                 encrypt.hash(pass, 12)
                     .then(pass => {
-                        db.execute('insert into record values(?,?,?,?,?,?,?)', [req.body.email, pass, req.body.fname, req.body.lname, req.body.type == '1', req.body.gender, req.body.contact])
+                        db.execute('insert into record values(?,?,?,?,?,?,?)', [req.body.email, pass, req.body.fname, req.body.lname, req.body.type, req.body.gender, req.body.contact])
                             .then(() => { res.redirect('/'); })
                             .catch(err => { console.log('ERR:' + err) });
                     })
@@ -65,8 +67,11 @@ app.post('/login', (req, res, next) => {
                         if (matched) {
                             req.session.isLoggedIn = true;
                             req.session.user = req.body.email;
+                            req.session.type = req.body.login;
                             req.session.save((err) => {
-                                console.log('Error save' + err);
+                                if (err) {
+                                    ('Error save' + err);
+                                }
                                 res.redirect('/dashboard');
                             });
                         } else {
@@ -92,7 +97,7 @@ app.get('/dashboard', (req, res, next) => {
     if (!req.session.isLoggedIn)
         res.redirect('/login');
     else {
-        res.render('dashboard', { title: 'Dashboard', dashboard: true });
+        res.render('dashboard', { title: 'Dashboard', dashboard: true, student: req.session.type == 0 });
     }
 });
 app.get('/profile/:uname', (req, res, next) => {
@@ -108,7 +113,7 @@ app.get('/profile/:uname', (req, res, next) => {
                     db.execute('select count(*) as tot from questions where askedby=? and ansby is not NULL', [user])
                         .then(rowb => {
                             tans = rowb[0][0].tot;
-                            res.render('profile', { dashboard: true, data: rows[0][0], profile: true, total: tques, totalans: tans, totalunans: (tques - tans) });
+                            res.render('profile', { dashboard: true, student: req.session.student == 0, data: rows[0][0], profile: true, total: tques, totalans: tans, totalunans: (tques - tans) });
                         })
                         .catch(err => { console.log(err) });
                 })
@@ -132,7 +137,7 @@ app.get('/myprofile', (req, res, next) => {
                         db.execute('select count(*) as tot from questions where askedby=? and ansby is not NULL', [user])
                             .then(rowb => {
                                 tans = rowb[0][0].tot;
-                                res.render('profile', { dashboard: true, data: rows[0][0], profile: true, total: tques, totalans: tans, totalunans: (tques - tans) });
+                                res.render('profile', { dashboard: true, student: req.session.type == 0, data: rows[0][0], profile: true, total: tques, totalans: tans, totalunans: (tques - tans) });
                             })
                             .catch(err => { console.log(err) });
                     })
@@ -146,9 +151,21 @@ app.get('/myquestions', (req, res, next) => {
         res.redirect('/login');
     else {
         let user = req.session.user;
-        db.execute('select * from record r, questions q where r.email=? and r.email=q.askedby order by num', [user])
+        db.execute('select * from record r, questions q where r.email=? and r.email=q.askedby order by num desc', [user])
             .then(rows => {
-                res.render('questions', { dashboard: true, data: rows[0], size: rows[0].length > 0, questions: true });
+                res.render('questions', { dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
+            })
+            .catch(err => { console.log(err) })
+    }
+});
+app.get('/myanswers', (req, res, next) => {
+    if (!req.session.isLoggedIn)
+        res.redirect('/login');
+    else {
+        let user = req.session.user;
+        db.execute('select * from record r,questions q where r.email=? and r.email=q.ansby', [user])
+            .then(rows => {
+                res.render('answers', { dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
             })
             .catch(err => { console.log(err) })
     }

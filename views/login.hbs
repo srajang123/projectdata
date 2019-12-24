@@ -1,4 +1,6 @@
-<form name="loginForm" action="/login" method="post" >
+<h2 id="title" class="title">Log&nbsp;In</h2>
+<div class="error"></div>
+<form name="loginForm" action="/login" method="post">
     <table id="signup" class="form">
         <tr>
             <td>
@@ -10,10 +12,10 @@
             </td>
         </tr> 
         <tr>
-            <td><input type="email" name="email"  id="email" class="text" placeholder="E-mail" required><br><br></td>
+            <td><input type="text" name="email"  id="email" class="text" placeholder="E-mail"><br><br></td>
         </tr>
         <tr>
-            <td><input type="password" name="password" required id="password" class="text" placeholder="Password"><br><br></td>
+            <td><input type="password" name="password" id="password" class="text" placeholder="Password"><br><br></td>
         </tr>
         <tr>
             <td><input type="submit" id="submit" class="button" value="LOGIN">
