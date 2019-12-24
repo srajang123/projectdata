@@ -1,0 +1,41 @@
+<h2 id="title" class="title">Sign&nbsp;Up</h2>
+    <div id="sign up" class="signup">
+        <div class="error"></div>
+        <form name="adminSignupForm" action="/admin-signup" method="post">
+            <table id="signup" class="form" > 
+                <tr>
+                    <td><input type="text" name="fname" placeholder="First Name"   id="fname" class="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="lname" placeholder="Last Name"   id="lname" class="text">
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="gender" id="gender" class="text">
+                            <option value="-1">--Gender--</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Gender">Others</option>
+                        </select>
+                    </td>
+                </tr>   
+                <tr>
+                    <td><input type="text" name="contact" placeholder="Contact" id="contact" class="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="email" placeholder="E-mail"   id="email" class="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="password" name="password" id="password" placeholder ="Password"   class="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="password" name="conpassword" id="conpassword" placeholder ="Confirm Password"   class="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="SIGNUP" class="button" id="signup">
+                    <input type="reset" id="reset" class="button" value="RESET"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
