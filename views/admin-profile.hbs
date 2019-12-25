@@ -1,0 +1,47 @@
+<div class="right">
+    {{#if data}}
+    <table class="divider">
+        <tr><td class="profile-left">
+    <h2 class="profile-name">{{{data.fname}}} {{{data.lname}}}</h2>
+    <h3 class="profile-type">Admin</h3>
+    <div class="profile" id="profile">
+            <table class="profile_per">
+                <tr class="profile_row">
+                    <th class="profile_head">E-mail:</th>
+                    <td class="profile_data">{{{data.uname}}}</td>
+                </tr>
+                <tr class="profile_row">
+                    <th class="profile_head">Contact:</th>
+                    <td class="profile_data">{{{data.contact}}}</td>
+                </tr>
+                <tr class="profile_row">
+                    <th class="profile_head">Account Type:</th>
+                    <td class="profile_data">Admin</td>
+                </tr>
+            </table>
+            </td>
+            <td class="profile-right noselect">
+                <img src="/images/profile.jpg" class="profile-pic">
+            </td>
+            </tr>
+        </table>
+        <div class="stats">
+            <div class="block noselect">
+                <h2>Total Users</h2>
+                <h3>{{{total}}}</h3>
+            </div>
+            <div class="block noselect">
+                <h2>Total Teachers</h2>
+                <h3>{{{totalteachers}}}</h3>
+            </div>
+            <div class="block noselect">
+                <h2>Total Students</h2>
+                <h3>{{{totalstudents}}}</h3>
+            </div>
+        </div>
+        {{else}}
+            <h1 class="nofound" id-"noUser">User {{{uame}}} cannot be found</h1>
+            <h2 class="nofound" id="redirect">Please check the username provided</h2>
+        {{/if}}
+    </div>
+</div>

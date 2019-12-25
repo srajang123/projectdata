@@ -37,6 +37,13 @@ app.get('/signup', (req, res, next) => {
 app.get('/about', (req, res, next) => {
     res.status(200).render('aboutus', { title: 'About Us', aboutPage: true });
 })
+app.post('/contact', (req, res, next) => {
+    db.execute('insert into contactmsg values(?,?,?,?,?)', [req.body.firstname, req.body.lastname, req.body.email, req.body.phone, , req.body.message])
+        .then(rows => {
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+})
 app.post('/signup', (req, res, next) => {
     db.execute('select * from record where email=?', [req.body.email])
         .then((rows) => {
@@ -171,15 +178,54 @@ app.get('/myanswers', (req, res, next) => {
     }
 })
 app.get('/admin', (req, res, next) => {
-    if (req.session.admin && req.session.isLoggedIn) {
-        res.render('profile');
+    if (req.session.admin && req.session.isAdminLoggedIn) {
+        res.status(200).render('profile', { title: 'Admin', dashboard: true, admin: true });
     } else
-        res.redirect('/admin-login');
+        res.redirect('/admin/login');
 });
-app.get('/admin-login', (req, res, next) => {
+app.get('/admin/contactmsg', (req, res, next) => {
+    db.execute('select * from contactmsg')
+        .then(rows => {
+            rows = rows[0];
+            res.status(200).render('admin-contactmsg', { title: 'Contact Us Messages', data: rows, admin: true, dashboard: true, size: rows.length > 0 });
+        })
+        .catch(err => { console.log(err) });
+});
+app.get('/admin/myprofile', (req, res, next) => {
+    let total = 0,
+        totalstudents = 0;
+    db.execute('select * from admin where uname=?', [req.session.user])
+        .then(rows => {
+            rows = rows[0][0];
+            db.execute('select count(*) as total from record')
+                .then(resp => {
+                    total = resp[0][0].total;
+                    db.execute('select count(*) as t from record where type=0')
+                        .then(rest => {
+                            totalstudents = rest[0][0].t;
+                            res.status(200).render('admin-profile', { title: (rows.fname + ' ' + rows.lname), profile: true, data: rows, dashboard: true, admin: true, total: total, totalstudents: totalstudents, totalteachers: (total - totalstudents) })
+                        })
+                        .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
+})
+app.get('/admin/logout', (req, res, next) => {
+    req.session.isAdminLoggedIn = false;
+    req.session.user = '';
+    req.session.admin = false;
+    req.session.save(err => {
+        if (err) {
+            console.log('Error saving: ' + err);
+        } else
+            res.redirect('/');
+    })
+})
+app.get('/admin/login', (req, res, next) => {
     res.render('admin-login', { title: 'Admin Login', loginPage: true, form: true });
 })
-app.post('/admin-login', (req, res, next) => {
+app.post('/admin/login', (req, res, next) => {
     db.execute('select * from admin where uname=?', [req.body.email])
         .then(rows => {
             rows = rows[0][0];
@@ -188,7 +234,7 @@ app.post('/admin-login', (req, res, next) => {
                     .then(ans => {
                         if (ans) {
                             req.session.admin = true;
-                            req.session.isLoggedIn = true;
+                            req.session.isAdminLoggedIn = true;
                             req.session.user = req.body.email;
                             req.session.save(err => {
                                 if (err) {
@@ -198,21 +244,21 @@ app.post('/admin-login', (req, res, next) => {
                             })
                         } else {
                             console.log('Password not match');
-                            res.redirect('/admin-login');
+                            res.redirect('/admin/login');
                         }
                     })
                     .catch(err => console.log(err));
             } else {
                 console.log('Record not found');
-                res.redirect('/admin-login');
+                res.redirect('/admin/login');
             }
         })
         .catch(err => console.log(err));
 });
-app.get('/admin-signup', (req, res, next) => {
+app.get('/admin/signup', (req, res, next) => {
     res.render('admin-signup', { title: 'Admin SignUp', signupPage: true, form: true });
 })
-app.post('/admin-signup', (req, res, next) => {
+app.post('/admin/signup', (req, res, next) => {
     db.execute('select * from admin')
         .then(rows => {
             rows = rows[0][0];
@@ -228,10 +274,24 @@ app.post('/admin-signup', (req, res, next) => {
                     .catch(err => { console.log(err) });
             } else {
                 console.log('Record already exists');
-                res.redirect('/admin-login');
+                res.redirect('/admin/login');
             }
         })
         .catch(err => { console.log(err) });
+});
+app.get('/admin/:type', (req, res, next) => {
+    let usertype = 1;
+    let title = 'Teachers';
+    if (req.params.type == 'students') {
+        usertype = 0;
+        title = 'Students';
+    }
+    db.execute('select * from record where type=? order by fname', [usertype])
+        .then(rows => {
+            rows = rows[0];
+            res.status(200).render('admin-records', { title: title, data: rows, student: usertype == 0, dashboard: true, admin: true, size: rows.length > 0, record: true });
+        })
+        .catch(err => console.log(err));
 });
 app.use((req, res, next) => {
     res.status(404).render('404', { title: 'Page Not Found' });
