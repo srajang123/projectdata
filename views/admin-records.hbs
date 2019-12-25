@@ -1,0 +1,18 @@
+<div class="right">
+    {{#if size}}
+    <div class="records">
+        {{#each data}}
+            <div class="record">
+                <h2 class="name">{{{this.fname}}} {{{this.lname}}}</h2>
+                <img class="dp" src="/images/profile.jpg">
+                <!--<h3 class="gender">{{{this.gender}}}</h3>-->
+                <h3 class="email">{{{this.email}}}</h3>
+                <h3 class="contact">{{{this.contact}}}</h3>
+            </div>
+        {{/each}}
+    </div>
+    {{else}}
+        <h2>There are no users yet</h2>
+        <h3><a href="/signup">Click here to register a new user</a></h3>
+    {{/if}}
+</div>

@@ -1,0 +1,51 @@
+.records {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.record {
+    flex: auto;
+    width: 25%;
+    max-width: 25%;
+    min-width: 25%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #5555ff;
+    margin-top: 4%;
+    background-color: #aaaaff;
+    margin-right: 4%;
+    padding: 0.5%;
+    border-radius: 10px;
+}
+
+.record:hover {
+    cursor: pointer;
+    background-color: #ccccff;
+    box-shadow: 0 0 4px 4px #5555ff;
+}
+
+.record:hover img.dp {
+    box-shadow: 0 0 2px 3px;
+    border-radius: 3px;
+}
+
+.name {
+    color: #11a;
+    font-size: 150%;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 4%;
+}
+
+img.dp {
+    width: 50%;
+    margin: 1% 0 1% 25%;
+}
+
+@media (max-width: 800px) {
+    .record {
+        max-width: 50%;
+        min-width: 50%;
+        width: 50%;
+    }
+}
