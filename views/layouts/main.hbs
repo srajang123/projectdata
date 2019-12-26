@@ -22,6 +22,9 @@
     {{#if record}}
         <link rel="stylesheet" href="/css/record.css">
     {{/if}}
+    {{#if msg}}
+        <link rel="stylesheet" href="/css/contact.css">
+    {{/if}}
 </head>
 <body>
     <div id="header" class="header">
@@ -89,4 +92,5 @@
     {{#if homePage}}<script src="/js/main.js"></script>{{/if}}
     {{#if signUpPage}}<script src="/js/signup.js"></script>{{/if}}
     {{#if form}}<script src="/js/validate.js"></script>{{/if}}
+    {{#if msg}}<script src="/js/contact.js"></script>{{/if}}
 </html>

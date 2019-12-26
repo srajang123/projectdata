@@ -187,7 +187,7 @@ app.get('/admin/contactmsg', (req, res, next) => {
     db.execute('select * from contactmsg')
         .then(rows => {
             rows = rows[0];
-            res.status(200).render('admin-contactmsg', { title: 'Contact Us Messages', data: rows, admin: true, dashboard: true, size: rows.length > 0 });
+            res.status(200).render('admin-contactmsg', { title: 'Contact Us Messages', data: rows, admin: true, dashboard: true, size: rows.length > 0, msg: true });
         })
         .catch(err => { console.log(err) });
 });
