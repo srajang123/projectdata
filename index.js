@@ -354,6 +354,6 @@ app.get('/admin/:type', (req, res, next) => {
         .catch(err => console.log(err));
 });
 app.use((req, res, next) => {
-    res.status(404).render('404', { title: 'Page Not Found' });
+    res.status(404).render('404', { title: 'Page Not Found', dashboard: req.session.isLoggedIn, admin: req.session.admin, student: req.session.type == 0 });
 });
 app.listen(PORT, host, () => { console.log('Server running on ' + host + ':' + PORT); });

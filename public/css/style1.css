@@ -24,6 +24,12 @@ body {
 
 /*Page Not Found*/
 
+.nofound {
+    display: block;
+    position: relative;
+    left: -2%;
+}
+
 h1#nofound {
     color: #d00;
     font-size: 4vw;
