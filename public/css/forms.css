@@ -64,6 +64,30 @@ input.button:hover {
     font-weight: 700;
 }
 
+a.button {
+    display: inline-block;
+    text-decoration-line: none;
+    text-align: center;
+    border-style: solid;
+    font-size: 1vw;
+    color: #00f;
+    background-color: #fff;
+    border-width: 0.01vw;
+    border-color: #00f;
+    height: 2vw;
+    min-width: 5vw;
+    width: fit-content;
+    margin-left: 6vw;
+    margin-right: 5vw;
+    outline: none;
+}
+
+a.button:hover {
+    background-color: #00f;
+    color: #fff;
+    font-weight: 700;
+}
+
 .error {
     display: block;
     height: 4vh;
