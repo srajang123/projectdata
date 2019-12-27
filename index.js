@@ -7,6 +7,7 @@ const ip = require('ip');
 const encrypt = require('bcrypt');
 const session = require('express-session');
 const dbSession = require('express-mysql-session');
+const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const host = ip.address();
@@ -92,6 +93,65 @@ app.post('/login', (req, res, next) => {
         })
         .catch(err => { console.log('ERR:' + err) });
 });
+app.get('/resetpass', (req, res, next) => {
+    res.render('resetpass', { title: 'Reset Password', form: true });
+})
+app.get('/resetpass/:token', (req, res, next) => {
+    const token = req.params.token;
+    db.execute('select * from record where resetToken=? and resetTokenTime>?', [token, Date.now()])
+        .then(rows => {
+            rows = rows[0][0];
+            if (!rows) {
+                console.log('Invalid Token');
+                res.redirect('/login');
+            } else {
+                res.render('new-pass', { title: 'Change Password', form: true, token: token, user: rows.email });
+            }
+        })
+        .catch(err => { console.log(err) });
+});
+app.post('/new-pass', (req, res, next) => {
+    db.execute('select * from record where email=? and  resetToken=?', [req.body.user, req.body.token])
+        .then(rows => {
+            rows = rows[0][0];
+            if (!rows || rows.resetTokenTime < Date.now()) {
+                console.log('Invald Token found');
+                res.redirect('/login');
+            } else {
+                encrypt.hash(req.body.password, 12)
+                    .then(pass => {
+                        db.execute('update record set password=?,resetToken=null,resetTokenTime=null where email=?', [pass, req.body.user])
+                            .then(row => {
+                                res.redirect('/login');
+                            })
+                            .catch(err => { console.log(err) });
+                    })
+                    .catch(err => { console.log(err) });
+            }
+        })
+        .catch(err => console.log(err));
+});
+app.post('/resetpass', (req, res, next) => {
+    db.execute('select * from record where email=?', [req.body.email])
+        .then(rows => {
+            if (rows[0][0]) {
+                crypto.randomBytes(12, (err, buffer) => {
+                    const token = buffer.toString('hex');
+                    db.execute('update record set resetToken=?,resetTokenTime=? where email=?', [token, Date.now() + 3600000, req.body.email])
+                        .then(rows => {
+                            console.log('Name: ' + req.body.email);
+                            console.log('Token:' + token);
+                            res.redirect('/');
+                        })
+                        .catch(err => console.log(err));
+                });
+            } else {
+                console.log('User not found');
+                res.redirect('/resetpass');
+            }
+        })
+        .catch(err => console.log(err));
+});
 app.get('/logout', (req, res, next) => {
     req.session.isLoggedIn = false;
     req.session.user = null;
@@ -127,7 +187,7 @@ app.get('/profile/:uname', (req, res, next) => {
                 .catch(err => { console.log(err) });
         })
         .catch(err => { console.log(err) })
-})
+});
 app.get('/myprofile', (req, res, next) => {
     if (!req.session.isLoggedIn)
         res.redirect('/login');
@@ -176,7 +236,7 @@ app.get('/myanswers', (req, res, next) => {
             })
             .catch(err => { console.log(err) })
     }
-})
+});
 app.get('/admin', (req, res, next) => {
     if (req.session.admin && req.session.isAdminLoggedIn) {
         res.status(200).render('profile', { title: 'Admin', dashboard: true, admin: true });
@@ -187,7 +247,7 @@ app.get('/admin/contactmsg', (req, res, next) => {
     db.execute('select * from contactmsg')
         .then(rows => {
             rows = rows[0];
-            res.status(200).render('admin-contactmsg', { title: 'Contact Us Messages', data: rows, admin: true, dashboard: true, size: rows.length > 0 });
+            res.status(200).render('admin-contactmsg', { title: 'Contact Us Messages', data: rows, admin: true, dashboard: true, size: rows.length > 0, msg: true });
         })
         .catch(err => { console.log(err) });
 });
@@ -210,7 +270,7 @@ app.get('/admin/myprofile', (req, res, next) => {
                 .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
-})
+});
 app.get('/admin/logout', (req, res, next) => {
     req.session.isAdminLoggedIn = false;
     req.session.user = '';
@@ -221,10 +281,10 @@ app.get('/admin/logout', (req, res, next) => {
         } else
             res.redirect('/');
     })
-})
+});
 app.get('/admin/login', (req, res, next) => {
     res.render('admin-login', { title: 'Admin Login', loginPage: true, form: true });
-})
+});
 app.post('/admin/login', (req, res, next) => {
     db.execute('select * from admin where uname=?', [req.body.email])
         .then(rows => {
@@ -257,7 +317,7 @@ app.post('/admin/login', (req, res, next) => {
 });
 app.get('/admin/signup', (req, res, next) => {
     res.render('admin-signup', { title: 'Admin SignUp', signupPage: true, form: true });
-})
+});
 app.post('/admin/signup', (req, res, next) => {
     db.execute('select * from admin')
         .then(rows => {

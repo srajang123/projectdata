@@ -1,18 +1,28 @@
 <div class="right">
     {{#if size}}
-    <div class="records">
+    <div class="msgs">
         {{#each data}}
-            <div class="record">
+            <div class="msg">
                 <h2 class="name">{{{this.fname}}} {{{this.lname}}}</h2>
-                <img class="dp" src="/images/profile.jpg">
-                <!--<h3 class="gender">{{{this.gender}}}</h3>-->
-                <h3 class="email">{{{this.email}}}</h3>
-                <h3 class="contact">{{{this.contact}}}</h3>
+                <h3 class="data">{{{this.msg}}}</h3>
+                <input type="hidden" class="email" value="{{{this.email}}}">
+                <input type="hidden" class="contact" value="{{{this.contact}}}">
             </div>  
         {{/each}}
+        <div class="msg-resolve">
+            <h2 class="form-name"></h2>
+            <h3 class="form-data"></h3>
+            <form name="resolve" action="/contactmsg" method="post">
+                <input type="hidden" name="mail" class="mail" value="">
+                <input type="hidden" name="mob" class="mob" value="">
+                <textarea name="reply" class="reply" noresize="noresize"></textarea>
+                <input type="submit" value="Send">
+                <input type="reset" value="Clear">
+            </form>
+        </div>
     </div>
     {{else}}
-        <h2>There are no users yet</h2>
+        <h2>There are no messages yet</h2>
         <h3><a href="/signup">Click here to register a new user</a></h3>
     {{/if}}
 </div>
