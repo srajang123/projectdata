@@ -8,6 +8,7 @@ const encrypt = require('bcrypt');
 const session = require('express-session');
 const dbSession = require('express-mysql-session');
 const crypto = require('crypto');
+const flash = require('connect-flash');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const host = ip.address();
@@ -19,6 +20,7 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
+app.use(flash());
 app.use((req, res, next) => {
     res.locals.loggedIn = req.session.isLoggedIn;
     next();
@@ -64,7 +66,9 @@ app.post('/signup', (req, res, next) => {
         })
 });
 app.get('/login', (req, res, next) => {
-    res.status(200).render('login', { title: 'LogIn', loginPage: true, form: true });
+    let hi = req.flash('error')[0];
+    console.log(hi);
+    res.status(200).render('login', { title: 'LogIn', loginPage: true, form: true, err: hi });
 });
 app.post('/login', (req, res, next) => {
     db.execute('select * from record where email=? and type=?', [req.body.email, req.body.login])
@@ -83,13 +87,16 @@ app.post('/login', (req, res, next) => {
                                 res.redirect('/dashboard');
                             });
                         } else {
+                            req.flash('error', 'Incorrect Password');
                             console.log('Not Matched');
                             res.redirect('/login');
                         }
                     })
                     .catch(err => { res.redirect('/login'); });
-            } else
+            } else {
+                req.flash('error', 'E-mail not found');
                 res.redirect('/login');
+            }
         })
         .catch(err => { console.log('ERR:' + err) });
 });

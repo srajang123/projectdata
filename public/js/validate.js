@@ -6,6 +6,11 @@ if (document.forms['adminSignupForm'])
     document.forms['adminSignupForm'].onsubmit = () => { return adminSignup() }
 if (document.forms['signupForm'])
     document.forms['signupForm'].onsubmit = () => { return signup() }
+window.onload = () => {
+    if (document.querySelector('.error').innerHTML) {
+        error(document.querySelector('.error').innerHTML);
+    }
+}
 
 function login() {
     let type = document.querySelector('#type').value;
@@ -112,7 +117,6 @@ function error(msg) {
         let a = setInterval(() => {
             err.style.visibility = 'visible';
             err.style.opacity = Number(err.style.opacity) - 0.1;
-            console.log(err.style.opacity);
             if (err.style.opacity == 0) {
                 clearInterval(a);
                 err.style.opacity = 1;

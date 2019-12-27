@@ -77,6 +77,7 @@ h2#nofound {
 h1.header {
     color: #111;
     font-size: 4.5vw;
+    font-family: 'Courgette', cursive;
     padding-left: 3vw;
     cursor: default;
     text-decoration-line: underline;
