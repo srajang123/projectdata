@@ -1,6 +1,6 @@
 <h2 id="title" class="title">Sign&nbsp;Up</h2>
     <div id="sign up" class="signup">
-        <div class="error"></div>
+        <div class="error">{{#if err}}{{{err}}}{{/if}}</div>
         <form name="signupForm" action="/signup" method="post">
             <table id="signup" class="form" > 
                 <tr>
