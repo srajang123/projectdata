@@ -1,11 +1,14 @@
 body {
+    height: 100vh;
     background-color: #135;
+    background-image: linear-gradient(to bottom right, #135, #357, #579, #ace);
 }
 
 h2#title {
     color: #def;
-    font-size: 3vw;
+    font-size: 2.8vw;
     text-transform: uppercase;
+    font-family: 'Baloo Bhai', cursive;
     text-align: center;
     cursor: default;
     user-select: none;
@@ -105,4 +108,9 @@ a.button:hover {
     text-align: center;
     margin-top: 0.5%;
     visibility: hidden;
+    font-family: 'Ubuntu', cursive;
+}
+
+textarea {
+    resize: none;
 }

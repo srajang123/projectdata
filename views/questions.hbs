@@ -1,25 +1,5 @@
 <div class="right">
-    {{#if size}}<!--
-    <table class="quest" id="quest" border="1">
-        <tr>
-            <th>S.No</th>
-            <th>Question</th>
-            <th>Description</th>
-            <th>Subject</th>
-            <th>Answer</th>
-            <th>Answered By</th>
-        </tr>
-        {{#each data}}
-        <tr>
-            <td class="sno">{{{this.num}}}</td>
-            <td class="ques">{{{this.question}}}</td>
-            <td class="desc">{{{this.description}}}</td>
-            <td>{{{this.subject}}}</td>
-            <td class="ans">{{{this.answer}}}</td>
-            <td><a href="/profile/{{{this.ansby}}}">View Profile</a></td>
-        </tr>
-        {{/each}}
-    </table>-->
+    {{#if size}}
     <div class="questions">
         {{#each data}}
             <div class="question">

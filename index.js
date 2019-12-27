@@ -8,6 +8,7 @@ const encrypt = require('bcrypt');
 const session = require('express-session');
 const dbSession = require('express-mysql-session');
 const crypto = require('crypto');
+const flash = require('connect-flash');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const host = ip.address();
@@ -19,6 +20,7 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
+app.use(flash());
 app.use((req, res, next) => {
     res.locals.loggedIn = req.session.isLoggedIn;
     next();
@@ -33,7 +35,7 @@ app.get('/contact', (req, res, next) => {
     res.status(200).render('contactus', { title: 'Contact Us', contactPage: true, form: true });
 })
 app.get('/signup', (req, res, next) => {
-    res.status(200).render('signup', { title: 'Sign Up', signupPage: true, form: true });
+    res.status(200).render('signup', { title: 'Sign Up', signupPage: true, form: true, err: req.flash('error')[0] });
 });
 app.get('/about', (req, res, next) => {
     res.status(200).render('aboutus', { title: 'About Us', aboutPage: true });
@@ -58,13 +60,15 @@ app.post('/signup', (req, res, next) => {
                     })
                     .catch(err => { console.log('ERR:' + err) });
             } else {
-                console.log('Record already exists');
+                req.flash('error', 'Record already Exists!');
                 res.redirect('/signup');
             }
         })
 });
 app.get('/login', (req, res, next) => {
-    res.status(200).render('login', { title: 'LogIn', loginPage: true, form: true });
+    let hi = req.flash('error')[0];
+    console.log(hi);
+    res.status(200).render('login', { title: 'LogIn', loginPage: true, form: true, err: hi });
 });
 app.post('/login', (req, res, next) => {
     db.execute('select * from record where email=? and type=?', [req.body.email, req.body.login])
@@ -83,13 +87,15 @@ app.post('/login', (req, res, next) => {
                                 res.redirect('/dashboard');
                             });
                         } else {
-                            console.log('Not Matched');
+                            req.flash('error', 'Incorrect Password');
                             res.redirect('/login');
                         }
                     })
                     .catch(err => { res.redirect('/login'); });
-            } else
+            } else {
+                req.flash('error', 'E-mail not found');
                 res.redirect('/login');
+            }
         })
         .catch(err => { console.log('ERR:' + err) });
 });
@@ -102,7 +108,7 @@ app.get('/resetpass/:token', (req, res, next) => {
         .then(rows => {
             rows = rows[0][0];
             if (!rows) {
-                console.log('Invalid Token');
+                req.flash('error', 'Invalid Token');
                 res.redirect('/login');
             } else {
                 res.render('new-pass', { title: 'Change Password', form: true, token: token, user: rows.email });
@@ -115,13 +121,14 @@ app.post('/new-pass', (req, res, next) => {
         .then(rows => {
             rows = rows[0][0];
             if (!rows || rows.resetTokenTime < Date.now()) {
-                console.log('Invald Token found');
+                req.flash('error', 'Invald Token');
                 res.redirect('/login');
             } else {
                 encrypt.hash(req.body.password, 12)
                     .then(pass => {
                         db.execute('update record set password=?,resetToken=null,resetTokenTime=null where email=?', [pass, req.body.user])
                             .then(row => {
+                                req.flash('error', 'Password Updated');
                                 res.redirect('/login');
                             })
                             .catch(err => { console.log(err) });
@@ -146,7 +153,7 @@ app.post('/resetpass', (req, res, next) => {
                         .catch(err => console.log(err));
                 });
             } else {
-                console.log('User not found');
+                req.flash('error', 'E-mail not found');
                 res.redirect('/resetpass');
             }
         })
@@ -161,9 +168,10 @@ app.get('/logout', (req, res, next) => {
 });
 
 app.get('/dashboard', (req, res, next) => {
-    if (!req.session.isLoggedIn)
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to continue');
         res.redirect('/login');
-    else {
+    } else {
         res.render('dashboard', { title: 'Dashboard', dashboard: true, student: req.session.type == 0 });
     }
 });
@@ -189,9 +197,10 @@ app.get('/profile/:uname', (req, res, next) => {
         .catch(err => { console.log(err) })
 });
 app.get('/myprofile', (req, res, next) => {
-    if (!req.session.isLoggedIn)
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to continue');
         res.redirect('/login');
-    else {
+    } else {
         let user = req.session.user;
         db.execute('select * from record where email=?', [user])
             .then(rows => {
@@ -214,62 +223,104 @@ app.get('/myprofile', (req, res, next) => {
     }
 });
 app.get('/myquestions', (req, res, next) => {
-    if (!req.session.isLoggedIn)
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to continue');
         res.redirect('/login');
-    else {
+    } else {
         let user = req.session.user;
         db.execute('select * from record r, questions q where r.email=? and r.email=q.askedby order by num desc', [user])
             .then(rows => {
-                res.render('questions', { dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
+                console.table(rows[0]);
+                res.render('questions', { title: 'Questions', dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
             })
             .catch(err => { console.log(err) })
     }
 });
 app.get('/myanswers', (req, res, next) => {
-    if (!req.session.isLoggedIn)
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to continue');
         res.redirect('/login');
-    else {
+    } else {
         let user = req.session.user;
         db.execute('select * from record r,questions q where r.email=? and r.email=q.ansby', [user])
             .then(rows => {
-                res.render('answers', { dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
+                res.render('answers', { title: 'Answers', dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
             })
             .catch(err => { console.log(err) })
     }
 });
+app.get('/newquestion', (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to asd Questions');
+        res.redirect('/login');
+    } else if (req.session.type != 0) {
+        req.flash('error', 'Please Login as student to add Question');
+        res.redirect('/login');
+    } else {
+        res.render('newquestion', { title: 'New Question', form: true, student: req.session.type == 0, dashboard: true });
+    }
+});
+app.post('/newquestion', (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to asd Questions');
+        res.redirect('/login');
+    } else if (req.session.type != 0) {
+        req.flash('error', 'Please Login as student to add Question');
+        res.redirect('/login');
+    } else {
+        db.execute('insert into questions values(?,?,null,?,null,?,null,?)', [req.body.subject, req.body.question, req.body.description, req.session.user, Date.now()])
+            .then(rows => {
+                res.redirect('/myquestions');
+                console.log('done')
+            })
+            .catch(err => console.log(err));
+    }
+})
 app.get('/admin', (req, res, next) => {
     if (req.session.admin && req.session.isAdminLoggedIn) {
         res.status(200).render('profile', { title: 'Admin', dashboard: true, admin: true });
-    } else
+    } else {
+        req.flash('error', 'Please LogIn to continue');
         res.redirect('/admin/login');
+    }
 });
 app.get('/admin/contactmsg', (req, res, next) => {
-    db.execute('select * from contactmsg')
-        .then(rows => {
-            rows = rows[0];
-            res.status(200).render('admin-contactmsg', { title: 'Contact Us Messages', data: rows, admin: true, dashboard: true, size: rows.length > 0, msg: true });
-        })
-        .catch(err => { console.log(err) });
+    if (req.session.admin && req.session.isAdminLoggedIn) {
+        db.execute('select * from contactmsg')
+            .then(rows => {
+                rows = rows[0];
+                res.status(200).render('admin-contactmsg', { title: 'Contact Us Messages', data: rows, admin: true, dashboard: true, size: rows.length > 0, msg: true });
+            })
+            .catch(err => { console.log(err) });
+    } else {
+        req.flash('error', 'Please LogIn to continue');
+        res.redirect('/admin/login');
+    }
 });
 app.get('/admin/myprofile', (req, res, next) => {
-    let total = 0,
-        totalstudents = 0;
-    db.execute('select * from admin where uname=?', [req.session.user])
-        .then(rows => {
-            rows = rows[0][0];
-            db.execute('select count(*) as total from record')
-                .then(resp => {
-                    total = resp[0][0].total;
-                    db.execute('select count(*) as t from record where type=0')
-                        .then(rest => {
-                            totalstudents = rest[0][0].t;
-                            res.status(200).render('admin-profile', { title: (rows.fname + ' ' + rows.lname), profile: true, data: rows, dashboard: true, admin: true, total: total, totalstudents: totalstudents, totalteachers: (total - totalstudents) })
-                        })
-                        .catch(err => console.log(err));
-                })
-                .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err));
+    if (req.session.admin && req.session.isAdminLoggedIn) {
+        let total = 0,
+            totalstudents = 0;
+        db.execute('select * from admin where uname=?', [req.session.user])
+            .then(rows => {
+                rows = rows[0][0];
+                db.execute('select count(*) as total from record')
+                    .then(resp => {
+                        total = resp[0][0].total;
+                        db.execute('select count(*) as t from record where type=0')
+                            .then(rest => {
+                                totalstudents = rest[0][0].t;
+                                res.status(200).render('admin-profile', { title: (rows.fname + ' ' + rows.lname), profile: true, data: rows, dashboard: true, admin: true, total: total, totalstudents: totalstudents, totalteachers: (total - totalstudents) })
+                            })
+                            .catch(err => console.log(err));
+                    })
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+    } else {
+        req.flash('error', 'Please LogIn to continue');
+        res.redirect('/admin/login');
+    }
 });
 app.get('/admin/logout', (req, res, next) => {
     req.session.isAdminLoggedIn = false;
@@ -283,7 +334,7 @@ app.get('/admin/logout', (req, res, next) => {
     })
 });
 app.get('/admin/login', (req, res, next) => {
-    res.render('admin-login', { title: 'Admin Login', loginPage: true, form: true });
+    res.render('admin-login', { title: 'Admin Login', loginPage: true, form: true, err: req.flash('error')[0] });
 });
 app.post('/admin/login', (req, res, next) => {
     db.execute('select * from admin where uname=?', [req.body.email])
@@ -340,20 +391,25 @@ app.post('/admin/signup', (req, res, next) => {
         .catch(err => { console.log(err) });
 });
 app.get('/admin/:type', (req, res, next) => {
-    let usertype = 1;
-    let title = 'Teachers';
-    if (req.params.type == 'students') {
-        usertype = 0;
-        title = 'Students';
+    if (req.session.admin && req.session.isAdminLoggedIn) {
+        let usertype = 1;
+        let title = 'Teachers';
+        if (req.params.type == 'students') {
+            usertype = 0;
+            title = 'Students';
+        }
+        db.execute('select * from record where type=? order by fname', [usertype])
+            .then(rows => {
+                rows = rows[0];
+                res.status(200).render('admin-records', { title: title, data: rows, student: usertype == 0, dashboard: true, admin: true, size: rows.length > 0, record: true });
+            })
+            .catch(err => console.log(err));
+    } else {
+        req.flash('error', 'Please LogIn to continue');
+        res.redirect('/admin/login');
     }
-    db.execute('select * from record where type=? order by fname', [usertype])
-        .then(rows => {
-            rows = rows[0];
-            res.status(200).render('admin-records', { title: title, data: rows, student: usertype == 0, dashboard: true, admin: true, size: rows.length > 0, record: true });
-        })
-        .catch(err => console.log(err));
 });
 app.use((req, res, next) => {
-    res.status(404).render('404', { title: 'Page Not Found' });
+    res.status(404).render('404', { title: 'Page Not Found', dashboard: req.session.isLoggedIn, admin: req.session.admin, student: req.session.type == 0 });
 });
 app.listen(PORT, host, () => { console.log('Server running on ' + host + ':' + PORT); });

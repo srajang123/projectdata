@@ -10,5 +10,6 @@ msg.forEach(msgs => {
         document.querySelector('.mob').value = mob;
         document.querySelector('.form-name').innerHTML = name;
         document.querySelector('.form-data').innerHTML = msg;
+        document.querySelector('.msg-resolve').style.visibility = 'visible';
     });
 });

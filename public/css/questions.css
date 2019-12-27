@@ -47,6 +47,7 @@ table.quest td.ans {
     width: 95%;
     min-width: 95%;
     background-color: aquamarine;
+    background-image: linear-gradient(to bottom right, #056BA3, #18C8D1);
     border-style: solid;
     border-width: 2px;
     margin: 1%;

@@ -24,6 +24,12 @@ body {
 
 /*Page Not Found*/
 
+.nofound {
+    display: block;
+    position: relative;
+    left: -2%;
+}
+
 h1#nofound {
     color: #d00;
     font-size: 4vw;
@@ -45,6 +51,7 @@ h2#nofound {
     position: fixed;
     width: 100%;
     top: 0;
+    overflow: hidden;
 }
 
 .header+.body {
@@ -71,6 +78,7 @@ h2#nofound {
 h1.header {
     color: #111;
     font-size: 4.5vw;
+    font-family: 'Courgette', cursive;
     padding-left: 3vw;
     cursor: default;
     text-decoration-line: underline;
