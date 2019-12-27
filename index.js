@@ -230,7 +230,8 @@ app.get('/myquestions', (req, res, next) => {
         let user = req.session.user;
         db.execute('select * from record r, questions q where r.email=? and r.email=q.askedby order by num desc', [user])
             .then(rows => {
-                res.render('questions', { dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
+                console.table(rows[0]);
+                res.render('questions', { title: 'Questions', dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
             })
             .catch(err => { console.log(err) })
     }
@@ -243,11 +244,38 @@ app.get('/myanswers', (req, res, next) => {
         let user = req.session.user;
         db.execute('select * from record r,questions q where r.email=? and r.email=q.ansby', [user])
             .then(rows => {
-                res.render('answers', { dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
+                res.render('answers', { title: 'Answers', dashboard: true, student: req.session.type == 0, data: rows[0], size: rows[0].length > 0, questions: true });
             })
             .catch(err => { console.log(err) })
     }
 });
+app.get('/newquestion', (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to asd Questions');
+        res.redirect('/login');
+    } else if (req.session.type != 0) {
+        req.flash('error', 'Please Login as student to add Question');
+        res.redirect('/login');
+    } else {
+        res.render('newquestion', { title: 'New Question', form: true, student: req.session.type == 0, dashboard: true });
+    }
+});
+app.post('/newquestion', (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        req.flash('error', 'Please LogIn to asd Questions');
+        res.redirect('/login');
+    } else if (req.session.type != 0) {
+        req.flash('error', 'Please Login as student to add Question');
+        res.redirect('/login');
+    } else {
+        db.execute('insert into questions values(?,?,null,?,null,?,null,?)', [req.body.subject, req.body.question, req.body.description, req.session.user, Date.now()])
+            .then(rows => {
+                res.redirect('/myquestions');
+                console.log('done')
+            })
+            .catch(err => console.log(err));
+    }
+})
 app.get('/admin', (req, res, next) => {
     if (req.session.admin && req.session.isAdminLoggedIn) {
         res.status(200).render('profile', { title: 'Admin', dashboard: true, admin: true });

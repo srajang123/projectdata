@@ -33,19 +33,46 @@
 
 .msg-resolve {
     display: block;
+    position: fixed;
+    top: 25%;
+    left: 12%;
     background-color: #acacac;
     border-radius: 5px;
     width: 50%;
     margin-left: 20%;
     height: 50vh;
-    position: relative;
-    top: -10vh;
     padding: 1%;
     border-style: solid;
     border-color: #111;
+    visibility: hidden;
 }
 
 .reply {
     width: 100%;
     height: 30vh;
+}
+
+input.button {
+    font-size: 1vw;
+    color: #00f;
+    background-color: #fff;
+    border-width: 0.01vw;
+    border-color: #00f;
+    height: 2vw;
+    width: 5vw;
+    margin-left: 6vw;
+    margin-right: 5vw;
+    outline: none;
+}
+
+input.button:hover {
+    background-color: #00f;
+    color: #fff;
+    font-weight: 700;
+}
+
+textarea.text {
+    padding: 0.5vw;
+    width: 90%;
+    resize: none;
 }

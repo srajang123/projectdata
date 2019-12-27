@@ -9,6 +9,7 @@ ul.nav-ver {
     padding: 0;
     width: 20%;
     background-color: #00a;
+    background-image: linear-gradient(to bottom right, #004, #1D9DC7);
     height: 100%;
     position: fixed;
     overflow: none;
@@ -23,6 +24,7 @@ li.navilink {
 
 li.navilink:hover {
     background-color: #00f;
+    background-image: linear-gradient(to bottom right, #00f, #fff);
     cursor: pointer;
 }
 

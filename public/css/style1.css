@@ -51,6 +51,7 @@ h2#nofound {
     position: fixed;
     width: 100%;
     top: 0;
+    overflow: hidden;
 }
 
 .header+.body {

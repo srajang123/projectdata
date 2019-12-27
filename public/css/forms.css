@@ -110,3 +110,7 @@ a.button:hover {
     visibility: hidden;
     font-family: 'Ubuntu', cursive;
 }
+
+textarea {
+    resize: none;
+}
