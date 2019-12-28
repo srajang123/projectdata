@@ -1,0 +1,18 @@
+<div class="right">
+    {{#if size}}
+    <div class="questions">
+        {{#each data}}
+            <div class="question">
+                <h2 class="quest">{{{this.question}}}</h2>
+                <hr>
+                <h3 class="subject">{{{this.subject}}}</h3>
+                <h3 class="desc">{{{this.description}}}</h3>
+                <h3 class="ans">{{{this.answer}}}</h3>
+            </div>
+        {{/each}}
+    </div>
+    {{else}}
+        <h2>You have not asked any question yet</h2>
+        <h3><a href="/newquestion">Click here to ask a question</a></h3>
+    {{/if}}
+</div>
